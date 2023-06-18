@@ -30,17 +30,18 @@ fn main() {
    previous = current.clone();
 
    if current.iter().position(|&key| key == device_query::Keycode::LAlt ).is_some() {
-    scan_send( 0x1D ); sleep(duration); scan_send( 0x1D );
-                       sleep(duration); scan_send( 0x1D );
-                       sleep(duration); scan_send( 0x1D );
-                       sleep(duration); scan_send( 0x1D );
-                       sleep(duration); scan_send( 0x1D );
+    scan_send( 0x1D ); sleep(duration); scan_send( 0x1D ); sleep(duration); scan_send( 0x1D ); sleep(duration); scan_send( 0x1D ); sleep(duration); scan_send( 0x1D ); sleep(duration); scan_send( 0x1D );
+
    }//if current.iter().position(|&key| key == device_query::Keycode::LAlt ).is_some() {
 
-   if current.iter().position(|&key| key == device_query::Keycode::RAlt ).is_some() {
+   if current.iter().position(|&key| key == device_query::Keycode::R ).is_some() {
     scan_send( 0x1D ); sleep(duration); scan_send( 0x1D );
-                       sleep(duration); scan_send( 0x1D );
-                       sleep(duration); scan_send( 0x1D );
+
+   }//if current.iter().position(|&key| key == device_query::Keycode::R ).is_some() {
+
+   if current.iter().position(|&key| key == device_query::Keycode::RAlt ).is_some() {
+    scan_send( 0x1D ); sleep(duration); scan_send( 0x1D ); sleep(duration); scan_send( 0x1D ); sleep(duration); scan_send( 0x1D );
+
    }//if current.iter().position(|&key| key == device_query::Keycode::RAlt ).is_some() {
 
    if current.iter().position(|&key| key == device_query::Keycode::W).is_some() {
