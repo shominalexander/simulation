@@ -1,29 +1,25 @@
-use device_query::{ DeviceQuery, DeviceState };
-use enigo::KeyboardControllable               ;
-use simulate                                  ;
-use std::mem                                  ;
-use tfc::{ traits::KeyboardContext           };
-use winapi::um::winuser::*                    ;
-use winput::Vk                                ;
+use device_query::DeviceQuery;
 
-fn send_input_key(virtual_key: i32, down: bool) {
+fn scan_send(scan: u16) {
  unsafe {
-  let mut input = INPUT { type_: INPUT_KEYBOARD, u: std::mem::zeroed() };
+  let mut input = winapi::um::winuser::INPUT { type_: winapi::um::winuser::INPUT_KEYBOARD, u: std::mem::zeroed() };
 
-  *input.u.ki_mut() = KEYBDINPUT { wVk: virtual_key as u16, dwFlags: if down { 0 } else { KEYEVENTF_KEYUP }, dwExtraInfo: 1, wScan: 0, time: 0 };
+  *input.u.ki_mut() = winapi::um::winuser::KEYBDINPUT { wVk: 0, dwFlags: winapi::um::winuser::KEYEVENTF_SCANCODE, dwExtraInfo: 1, wScan: scan, time: 0 };
 
-  SendInput(1, &mut input, mem::size_of::<INPUT>() as i32);
+  winapi::um::winuser::SendInput(1, &mut input, std::mem::size_of::<winapi::um::winuser::INPUT>() as i32);
+
+  input.u.ki_mut().dwFlags = winapi::um::winuser::KEYEVENTF_KEYUP | winapi::um::winuser::KEYEVENTF_SCANCODE;
+
+  winapi::um::winuser::SendInput(1, &mut input, std::mem::size_of::<winapi::um::winuser::INPUT>() as i32);
  }//unsafe {
-}//fn send_input_key(virtual_key: i32, up: bool) {
+}//fn scan_send(scan: u16) {
 
-fn send_input_key_down(virtual_key: i32) { send_input_key(virtual_key, true ); }
-fn send_input_key_up  (virtual_key: i32) { send_input_key(virtual_key, false); }
+fn sleep(duration: u64) { std::thread::sleep(std::time::Duration::from_millis(duration)); }
 
 fn main() {
- let mut context : tfc::Context               = tfc::Context::new().unwrap();
- let mut enigo   : enigo::Enigo               = enigo::Enigo::new()         ;
- let mut previous: Vec<device_query::Keycode> = vec![]                      ;
- let     state   : DeviceState                = DeviceState::new()          ;
+ let     duration: u64                        = 4                               ;
+ let mut previous: Vec<device_query::Keycode> = vec![]                          ;
+ let     state   : device_query::DeviceState  = device_query::DeviceState::new();
 
  loop {
   let current: Vec<device_query::Keycode> = state.get_keys();
@@ -33,21 +29,28 @@ fn main() {
 
    previous = current.clone();
 
-   let size: usize = current.len();
+   if current.iter().position(|&key| key == device_query::Keycode::LAlt ).is_some() {
+    scan_send( 0x1D ); sleep(duration); scan_send( 0x1D );
+                       sleep(duration); scan_send( 0x1D );
+                       sleep(duration); scan_send( 0x1D );
+                       sleep(duration); scan_send( 0x1D );
+                       sleep(duration); scan_send( 0x1D );
+   }//if current.iter().position(|&key| key == device_query::Keycode::LAlt ).is_some() {
 
-   match size {
-    1 => {
-     if current[0] == device_query::Keycode::Escape { break; }
+   if current.iter().position(|&key| key == device_query::Keycode::RAlt ).is_some() {
+    scan_send( 0x1D ); sleep(duration); scan_send( 0x1D );
+                       sleep(duration); scan_send( 0x1D );
+                       sleep(duration); scan_send( 0x1D );
+   }//if current.iter().position(|&key| key == device_query::Keycode::RAlt ).is_some() {
 
-     if current[0] == device_query::Keycode::C { let _ = context.key_down(             tfc::Key::Meta ); let _ =    context.key_up(             tfc::Key::Meta ); }
-     if current[0] == device_query::Keycode::E {           enigo.key_down(           enigo::Key::Meta );              enigo.key_up(           enigo::Key::Meta ); }
-     if current[0] == device_query::Keycode::I {      send_input_key_down(                       0x5B );         send_input_key_up(                       0x5B ); }
-     if current[0] == device_query::Keycode::S { let _ =  simulate::press( simulate::Key::LeftWindows ); let _ = simulate::release( simulate::Key::LeftWindows ); }
-     if current[0] == device_query::Keycode::W {            winput::press(                Vk::LeftWin );           winput::release(                Vk::LeftWin ); }
-    }//1 => {
-
-    _ => { }
-   }//match size {
+   if current.iter().position(|&key| key == device_query::Keycode::W).is_some() {
+    winput::send_inputs( [ winput::Input::from_vk( winput::Vk::Alt, winput::Action::Press   )
+                         , winput::Input::from_vk( winput::Vk::Tab, winput::Action::Press   )
+                         , winput::Input::from_vk( winput::Vk::Tab, winput::Action::Release )
+                         , winput::Input::from_vk( winput::Vk::Alt, winput::Action::Release )
+                         ]
+                       );
+   }//if current.iter().position(|&key| key == device_query::Keycode::W).is_some() {
   }//if previous != current {
  }//loop {
 }//fn main() {
