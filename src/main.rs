@@ -17,7 +17,7 @@ fn scan_send(scan: u16) {
 fn sleep(duration: u64) { std::thread::sleep(std::time::Duration::from_millis(duration)); }
 
 fn main() {
- let     duration: u64                        = 4                               ;
+ let     duration: u64                        = 20                              ;
  let mut previous: Vec<device_query::Keycode> = vec![]                          ;
  let     state   : device_query::DeviceState  = device_query::DeviceState::new();
 
