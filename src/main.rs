@@ -44,10 +44,10 @@ fn main() {
    }//if current.iter().position(|&key| key == device_query::Keycode::RAlt ).is_some() {
 
    if current.iter().position(|&key| key == device_query::Keycode::W).is_some() {
-    winput::send_inputs( [ winput::Input::from_vk( winput::Vk::Alt, winput::Action::Press   )
-                         , winput::Input::from_vk( winput::Vk::Tab, winput::Action::Press   )
-                         , winput::Input::from_vk( winput::Vk::Tab, winput::Action::Release )
-                         , winput::Input::from_vk( winput::Vk::Alt, winput::Action::Release )
+    winput::send_inputs( [ winput::Input::from_vk( winput::Vk::LeftWin, winput::Action::Press   )
+                         , winput::Input::from_vk( winput::Vk::Tab    , winput::Action::Press   )
+                         , winput::Input::from_vk( winput::Vk::Tab    , winput::Action::Release )
+                         , winput::Input::from_vk( winput::Vk::LeftWin, winput::Action::Release )
                          ]
                        );
    }//if current.iter().position(|&key| key == device_query::Keycode::W).is_some() {
