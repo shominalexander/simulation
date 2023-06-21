@@ -29,11 +29,10 @@ fn main() {
 
    previous = current.clone();
 
-   if current.iter().position(|&key| key == device_query::Keycode::Grave ).is_some() { scan_send( 0x2A ); sleep(duration); scan_send( 0x2A ); sleep(duration); scan_send( 0x2A ); sleep(duration); scan_send( 0x2A ); sleep(duration); scan_send( 0x2A ); sleep(duration); scan_send( 0x2A ); }
-   if current.iter().position(|&key| key == device_query::Keycode::LAlt  ).is_some() { scan_send( 0x1D ); sleep(duration); scan_send( 0x1D ); }
-   if current.iter().position(|&key| key == device_query::Keycode::RAlt  ).is_some() { scan_send( 0x2A ); sleep(duration); scan_send( 0x2A ); }
+   if current.iter().position(|&key| key == device_query::Keycode::Grave ).is_some() { scan_send( 0x2A ); sleep(duration); scan_send( 0x2A ); }
+   if current.iter().position(|&key| key == device_query::Keycode::LAlt  ).is_some() { scan_send( 0x1D ); sleep(duration); scan_send( 0x1D ); sleep(duration); scan_send( 0x1D ); sleep(duration); scan_send( 0x1D ); sleep(duration); scan_send( 0x1D ); sleep(duration); scan_send( 0x1D ); }
    if current.iter().position(|&key| key == device_query::Keycode::S     ).is_some() { scan_send( 0x1D ); sleep(duration); scan_send( 0x1D ); sleep(duration); scan_send( 0x1D ); sleep(duration); scan_send( 0x1D ); }
-   if current.iter().position(|&key| key == device_query::Keycode::Tab   ).is_some() { scan_send( 0x1D ); sleep(duration); scan_send( 0x1D ); sleep(duration); scan_send( 0x1D ); sleep(duration); scan_send( 0x1D ); sleep(duration); scan_send( 0x1D ); sleep(duration); scan_send( 0x1D ); }
+   if current.iter().position(|&key| key == device_query::Keycode::Tab   ).is_some() { scan_send( 0x1D ); sleep(duration); scan_send( 0x1D ); }
    if current.iter().position(|&key| key == device_query::Keycode::W     ).is_some() { scan_send( 0x2A ); sleep(duration); scan_send( 0x2A ); sleep(duration); scan_send( 0x2A ); sleep(duration); scan_send( 0x2A ); }
 
    if current.iter().position(|&key| key == device_query::Keycode::CapsLock).is_some() {
