@@ -1,7 +1,8 @@
 use device_query::DeviceQuery;
 
 fn scan_send(repeat: usize, scan: u16) {
- let     last    : usize    ;
+ let last: usize;
+
  let mut previous: usize = 0;
 
  if repeat == 0 { last = 1; } else { last = repeat; }
