@@ -1,6 +1,11 @@
 use device_query::DeviceQuery;
 
-fn scan_send(scan: u16) {
+fn scan_send(repeat: usize, scan: u16) {
+ let     last    : usize    ;
+ let mut previous: usize = 0;
+
+ if repeat == 0 { last = 1; } else { last = repeat; }
+
  unsafe {
   let mut input = winapi::um::winuser::INPUT { type_: winapi::um::winuser::INPUT_KEYBOARD, u: std::mem::zeroed() };
 
@@ -10,14 +15,17 @@ fn scan_send(scan: u16) {
 
   input.u.ki_mut().dwFlags = winapi::um::winuser::KEYEVENTF_KEYUP | winapi::um::winuser::KEYEVENTF_SCANCODE;
 
-  winapi::um::winuser::SendInput(1, &mut input, std::mem::size_of::<winapi::um::winuser::INPUT>() as i32);
- }//unsafe {
-}//fn scan_send(scan: u16) {
+  while previous < last {
+   winapi::um::winuser::SendInput(1, &mut input, std::mem::size_of::<winapi::um::winuser::INPUT>() as i32);
 
-fn sleep(duration: u64) { std::thread::sleep(std::time::Duration::from_millis(duration)); }
+   std::thread::sleep(std::time::Duration::from_millis(20));
+
+   previous += 1;
+  }//while previous < last {
+ }//unsafe {
+}//fn scan_send(repeat: usize, scan: u16) {
 
 fn main() {
- let     duration: u64                        = 20                              ;
  let mut previous: Vec<device_query::Keycode> = vec![]                          ;
  let     state   : device_query::DeviceState  = device_query::DeviceState::new();
 
@@ -29,11 +37,11 @@ fn main() {
 
    previous = current.clone();
 
-   if current.iter().position(|&key| key == device_query::Keycode::Grave ).is_some() { scan_send( 0x2A ); sleep(duration); scan_send( 0x2A ); }
-   if current.iter().position(|&key| key == device_query::Keycode::LAlt  ).is_some() { scan_send( 0x1D ); sleep(duration); scan_send( 0x1D ); sleep(duration); scan_send( 0x1D ); sleep(duration); scan_send( 0x1D ); sleep(duration); scan_send( 0x1D ); sleep(duration); scan_send( 0x1D ); }
-   if current.iter().position(|&key| key == device_query::Keycode::S     ).is_some() { scan_send( 0x1D ); sleep(duration); scan_send( 0x1D ); sleep(duration); scan_send( 0x1D ); sleep(duration); scan_send( 0x1D ); }
-   if current.iter().position(|&key| key == device_query::Keycode::Tab   ).is_some() { scan_send( 0x1D ); sleep(duration); scan_send( 0x1D ); }
-   if current.iter().position(|&key| key == device_query::Keycode::W     ).is_some() { scan_send( 0x2A ); sleep(duration); scan_send( 0x2A ); sleep(duration); scan_send( 0x2A ); sleep(duration); scan_send( 0x2A ); }
+   if current.iter().position(|&key| key == device_query::Keycode::Grave ).is_some() { scan_send( 4, 0x2A ); }
+   if current.iter().position(|&key| key == device_query::Keycode::LAlt  ).is_some() { scan_send( 6, 0x1D ); }
+   if current.iter().position(|&key| key == device_query::Keycode::S     ).is_some() { scan_send( 2, 0x1D ); }
+   if current.iter().position(|&key| key == device_query::Keycode::Tab   ).is_some() { scan_send( 4, 0x1D ); }
+   if current.iter().position(|&key| key == device_query::Keycode::W     ).is_some() { scan_send( 2, 0x2A ); }
 
    if current.iter().position(|&key| key == device_query::Keycode::CapsLock).is_some() {
     winput::send_inputs( [ winput::Input::from_vk( winput::Vk::LeftWin, winput::Action::Press   )
