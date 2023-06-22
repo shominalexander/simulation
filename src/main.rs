@@ -8,16 +8,15 @@ fn scan_send(repeat: usize, scan: u16) {
  if repeat == 0 { last = 1; } else { last = repeat; }
 
  unsafe {
-  let mut input = winapi::um::winuser::INPUT { type_: winapi::um::winuser::INPUT_KEYBOARD, u: std::mem::zeroed() };
+  let mut input_d = winapi::um::winuser::INPUT { type_: winapi::um::winuser::INPUT_KEYBOARD, u: std::mem::zeroed() };
+  let mut input_u = winapi::um::winuser::INPUT { type_: winapi::um::winuser::INPUT_KEYBOARD, u: std::mem::zeroed() };
 
-  *input.u.ki_mut() = winapi::um::winuser::KEYBDINPUT { wVk: 0, dwFlags: winapi::um::winuser::KEYEVENTF_SCANCODE, dwExtraInfo: 1, wScan: scan, time: 0 };
-
-  winapi::um::winuser::SendInput(1, &mut input, std::mem::size_of::<winapi::um::winuser::INPUT>() as i32);
-
-  input.u.ki_mut().dwFlags = winapi::um::winuser::KEYEVENTF_KEYUP | winapi::um::winuser::KEYEVENTF_SCANCODE;
+  *input_d.u.ki_mut() = winapi::um::winuser::KEYBDINPUT { wVk: 0, dwFlags: winapi::um::winuser::KEYEVENTF_SCANCODE                                       , dwExtraInfo: 1, wScan: scan, time: 0 };
+  *input_u.u.ki_mut() = winapi::um::winuser::KEYBDINPUT { wVk: 0, dwFlags: winapi::um::winuser::KEYEVENTF_SCANCODE | winapi::um::winuser::KEYEVENTF_KEYUP, dwExtraInfo: 1, wScan: scan, time: 0 };
 
   while previous < last {
-   winapi::um::winuser::SendInput(1, &mut input, std::mem::size_of::<winapi::um::winuser::INPUT>() as i32);
+   winapi::um::winuser::SendInput(1, &mut input_d, std::mem::size_of::<winapi::um::winuser::INPUT>() as i32);
+   winapi::um::winuser::SendInput(1, &mut input_u, std::mem::size_of::<winapi::um::winuser::INPUT>() as i32);
 
    std::thread::sleep(std::time::Duration::from_millis(20));
 
