@@ -28,7 +28,7 @@ fn scan_send(repeat: usize, scan: u16) {
 fn main() {
  let mut previous: Vec<device_query::Keycode> = vec![];
 
- let state: device_query::DeviceState  = device_query::DeviceState::new();
+ let state: device_query::DeviceState = device_query::DeviceState::new();
 
  loop {
   let current: Vec<device_query::Keycode> = state.get_keys();
