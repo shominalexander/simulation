@@ -38,11 +38,12 @@ fn main() {
 
    previous = current.clone();
 
-   if current.iter().position(|&key| key == device_query::Keycode::Grave ).is_some() { scan_send( 4, 0x2A ); }
-   if current.iter().position(|&key| key == device_query::Keycode::LAlt  ).is_some() { scan_send( 6, 0x1D ); }
-   if current.iter().position(|&key| key == device_query::Keycode::S     ).is_some() { scan_send( 2, 0x1D ); }
-   if current.iter().position(|&key| key == device_query::Keycode::Tab   ).is_some() { scan_send( 4, 0x1D ); }
-   if current.iter().position(|&key| key == device_query::Keycode::W     ).is_some() { scan_send( 2, 0x2A ); }
+   if current.iter().position(|&key| key == device_query::Keycode::F     ).is_some() { scan_send( 2, 0x2A ); }
+   if current.iter().position(|&key| key == device_query::Keycode::Grave ).is_some() { scan_send( 6, 0x2A ); }
+   if current.iter().position(|&key| key == device_query::Keycode::LAlt  ).is_some() { scan_send( 2, 0x1D ); }
+   if current.iter().position(|&key| key == device_query::Keycode::S     ).is_some() { scan_send( 4, 0x1D ); }
+   if current.iter().position(|&key| key == device_query::Keycode::Tab   ).is_some() { scan_send( 6, 0x1D ); }
+   if current.iter().position(|&key| key == device_query::Keycode::W     ).is_some() { scan_send( 4, 0x2A ); }
 
    if current.iter().position(|&key| key == device_query::Keycode::CapsLock).is_some() {
     winput::send_inputs( [ winput::Input::from_vk( winput::Vk::LeftWin, winput::Action::Press   )
