@@ -1,6 +1,6 @@
 use device_query::DeviceQuery;
 
-fn scan_send(repeat: usize, scan: u16) {
+fn scan_send(flag: u32, key: u16, repeat: usize, scan: u16) {
  let last: usize;
 
  let mut previous: usize = 0;
@@ -11,19 +11,19 @@ fn scan_send(repeat: usize, scan: u16) {
   let mut input_d = winapi::um::winuser::INPUT { type_: winapi::um::winuser::INPUT_KEYBOARD, u: std::mem::zeroed() };
   let mut input_u = winapi::um::winuser::INPUT { type_: winapi::um::winuser::INPUT_KEYBOARD, u: std::mem::zeroed() };
 
-  *input_d.u.ki_mut() = winapi::um::winuser::KEYBDINPUT { wVk: 0, dwFlags: winapi::um::winuser::KEYEVENTF_SCANCODE                                       , dwExtraInfo: 1, wScan: scan, time: 0 };
-  *input_u.u.ki_mut() = winapi::um::winuser::KEYBDINPUT { wVk: 0, dwFlags: winapi::um::winuser::KEYEVENTF_SCANCODE | winapi::um::winuser::KEYEVENTF_KEYUP, dwExtraInfo: 1, wScan: scan, time: 0 };
+  *input_d.u.ki_mut() = winapi::um::winuser::KEYBDINPUT { wVk: key, dwFlags: flag                                       , dwExtraInfo: winapi::um::winuser::GetMessageExtraInfo() as usize, wScan: scan, time: 0 };
+  *input_u.u.ki_mut() = winapi::um::winuser::KEYBDINPUT { wVk: key, dwFlags: flag | winapi::um::winuser::KEYEVENTF_KEYUP, dwExtraInfo: winapi::um::winuser::GetMessageExtraInfo() as usize, wScan: scan, time: 0 };
 
   while previous < last {
-   winapi::um::winuser::SendInput(1, &mut input_d, std::mem::size_of::<winapi::um::winuser::INPUT>() as i32);
-   winapi::um::winuser::SendInput(1, &mut input_u, std::mem::size_of::<winapi::um::winuser::INPUT>() as i32);
-
    std::thread::sleep(std::time::Duration::from_millis(20));
+
+   println!("winapi::um::winuser::SendInput(...): {:?}", winapi::um::winuser::SendInput(1, &mut input_d, std::mem::size_of::<winapi::um::winuser::INPUT>() as i32));
+   println!("winapi::um::winuser::SendInput(...): {:?}", winapi::um::winuser::SendInput(1, &mut input_u, std::mem::size_of::<winapi::um::winuser::INPUT>() as i32));
 
    previous += 1;
   }//while previous < last {
  }//unsafe {
-}//fn scan_send(repeat: usize, scan: u16) {
+}//fn scan_send(flag: u32, key: u16, repeat: usize, scan: u16) {
 
 fn main() {
  let mut previous: Vec<device_query::Keycode> = vec![];
@@ -38,16 +38,16 @@ fn main() {
 
    previous = current.clone();
 
-   if current.iter().position(|&key| key == device_query::Keycode::C        ).is_some() { scan_send( 4, 0x11D ); }
-   if current.iter().position(|&key| key == device_query::Keycode::F        ).is_some() { scan_send( 4, 0x36  ); }
-   if current.iter().position(|&key| key == device_query::Keycode::Grave    ).is_some() { scan_send( 8, 0x36  ); }
-   if current.iter().position(|&key| key == device_query::Keycode::LControl ).is_some() { scan_send( 2, 0x11D ); }
-   if current.iter().position(|&key| key == device_query::Keycode::LShift   ).is_some() { scan_send( 2, 0x36  ); }
-   if current.iter().position(|&key| key == device_query::Keycode::S        ).is_some() { scan_send( 6, 0x11D ); }
-   if current.iter().position(|&key| key == device_query::Keycode::Tab      ).is_some() { scan_send( 8, 0x11D ); }
-   if current.iter().position(|&key| key == device_query::Keycode::U        ).is_some() { scan_send( 3, 0x36  ); }
-   if current.iter().position(|&key| key == device_query::Keycode::W        ).is_some() { scan_send( 6, 0x36  ); }
-   if current.iter().position(|&key| key == device_query::Keycode::Y        ).is_some() { scan_send( 3, 0x11D ); }
+   if current.iter().position(|&key| key == device_query::Keycode::C        ).is_some() { scan_send( winapi::um::winuser::KEYEVENTF_EXTENDEDKEY, 0xA3, 4, 0xE01D ); }
+   if current.iter().position(|&key| key == device_query::Keycode::F        ).is_some() { scan_send( winapi::um::winuser::KEYEVENTF_SCANCODE   , 0x00, 4, 0x0036 ); }
+   if current.iter().position(|&key| key == device_query::Keycode::Grave    ).is_some() { scan_send( winapi::um::winuser::KEYEVENTF_SCANCODE   , 0x00, 8, 0x0036 ); }
+   if current.iter().position(|&key| key == device_query::Keycode::LControl ).is_some() { scan_send( winapi::um::winuser::KEYEVENTF_EXTENDEDKEY, 0xA3, 2, 0xE01D ); }
+   if current.iter().position(|&key| key == device_query::Keycode::LShift   ).is_some() { scan_send( winapi::um::winuser::KEYEVENTF_SCANCODE   , 0x00, 2, 0x0036 ); }
+   if current.iter().position(|&key| key == device_query::Keycode::S        ).is_some() { scan_send( winapi::um::winuser::KEYEVENTF_EXTENDEDKEY, 0xA3, 6, 0xE01D ); }
+   if current.iter().position(|&key| key == device_query::Keycode::Tab      ).is_some() { scan_send( winapi::um::winuser::KEYEVENTF_EXTENDEDKEY, 0xA3, 8, 0xE01D ); }
+   if current.iter().position(|&key| key == device_query::Keycode::U        ).is_some() { scan_send( winapi::um::winuser::KEYEVENTF_SCANCODE   , 0x00, 3, 0x0036 ); }
+   if current.iter().position(|&key| key == device_query::Keycode::W        ).is_some() { scan_send( winapi::um::winuser::KEYEVENTF_SCANCODE   , 0x00, 6, 0x0036 ); }
+   if current.iter().position(|&key| key == device_query::Keycode::Y        ).is_some() { scan_send( winapi::um::winuser::KEYEVENTF_EXTENDEDKEY, 0xA3, 3, 0xE01D ); }
 
    if current.iter().position(|&key| key == device_query::Keycode::CapsLock).is_some() {
     winput::send_inputs( [ winput::Input::from_vk( winput::Vk::LeftWin, winput::Action::Press   )
