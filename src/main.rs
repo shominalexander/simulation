@@ -17,8 +17,8 @@ fn scan_send(flag: u32, key: u16, repeat: usize, scan: u16) {
   while previous < last {
    std::thread::sleep(std::time::Duration::from_millis(20));
 
-   println!("winapi::um::winuser::SendInput(...): {:?}", winapi::um::winuser::SendInput(1, &mut input_d, std::mem::size_of::<winapi::um::winuser::INPUT>() as i32));
-   println!("winapi::um::winuser::SendInput(...): {:?}", winapi::um::winuser::SendInput(1, &mut input_u, std::mem::size_of::<winapi::um::winuser::INPUT>() as i32));
+   println!("winapi::um::winuser::SendInput(d): {:?}", winapi::um::winuser::SendInput(1, &mut input_d, std::mem::size_of::<winapi::um::winuser::INPUT>() as i32));
+   println!("winapi::um::winuser::SendInput(u): {:?}", winapi::um::winuser::SendInput(1, &mut input_u, std::mem::size_of::<winapi::um::winuser::INPUT>() as i32));
 
    previous += 1;
   }//while previous < last {
