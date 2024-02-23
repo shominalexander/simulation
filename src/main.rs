@@ -48,6 +48,7 @@ fn main() {
 
    if current.iter().position(|&key| key == device_query::Keycode::E      ).is_some() { scan_send( KEYEVENTF_SCANCODE, 0x00, 03, 0x0036 ); } if current.iter().position(|&key| key == device_query::Keycode::R        ).is_some() { scan_send( KEYEVENTF_EXTENDEDKEY, 0xA3, 03, 0xE01D ); } 
    if current.iter().position(|&key| key == device_query::Keycode::Q      ).is_some() { scan_send( KEYEVENTF_SCANCODE, 0x00, 05, 0x0036 ); } if current.iter().position(|&key| key == device_query::Keycode::W        ).is_some() { scan_send( KEYEVENTF_EXTENDEDKEY, 0xA3, 05, 0xE01D ); } 
+   if current.iter().position(|&key| key == device_query::Keycode::Grave  ).is_some() { scan_send( KEYEVENTF_SCANCODE, 0x00, 07, 0x0036 ); } if current.iter().position(|&key| key == device_query::Keycode::Tab      ).is_some() { scan_send( KEYEVENTF_EXTENDEDKEY, 0xA3, 07, 0xE01D ); } 
 
    if current.iter().position(|&key| key == device_query::Keycode::LShift ).is_some() { scan_send( KEYEVENTF_SCANCODE, 0x00, 12, 0x0036 ); } if current.iter().position(|&key| key == device_query::Keycode::LControl ).is_some() { scan_send( KEYEVENTF_EXTENDEDKEY, 0xA3, 12, 0xE01D ); } 
 
