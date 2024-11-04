@@ -41,9 +41,11 @@ fn main() {
   let current: Vec<device_query::Keycode> = state.get_keys();
 
   if previous != current {
+   previous = current.clone();
+
    println!("current: {:?}", current);
 
-   previous = current.clone();
+   if current.iter().position(|&key| key == device_query::Keycode::Meta   ).is_some() {                                          continue; } 
 
    if current.iter().position(|&key| key == device_query::Keycode::G      ).is_some() { scan_send( KEYEVENTF_SCANCODE, 0x00, 02, 0x0036 ); } if current.iter().position(|&key| key == device_query::Keycode::B        ).is_some() { scan_send( KEYEVENTF_EXTENDEDKEY, 0xA3, 02, 0xE01D ); } 
    if current.iter().position(|&key| key == device_query::Keycode::F      ).is_some() { scan_send( KEYEVENTF_SCANCODE, 0x00, 04, 0x0036 ); } if current.iter().position(|&key| key == device_query::Keycode::V        ).is_some() { scan_send( KEYEVENTF_EXTENDEDKEY, 0xA3, 04, 0xE01D ); } 
