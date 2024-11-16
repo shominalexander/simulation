@@ -46,16 +46,18 @@ fn main() {
    if current.iter().position(|&key| key == device_query::Keycode::D ).is_some() { scan_send( winapi::um::winuser::KEYEVENTF_SCANCODE   , 0x00, 06, 0x0036 ); }
    if current.iter().position(|&key| key == device_query::Keycode::S ).is_some() { scan_send( winapi::um::winuser::KEYEVENTF_SCANCODE   , 0x00, 08, 0x0036 ); }
    if current.iter().position(|&key| key == device_query::Keycode::A ).is_some() { scan_send( winapi::um::winuser::KEYEVENTF_SCANCODE   , 0x00, 12, 0x0036 ); }
-   if current.iter().position(|&key| key == device_query::Keycode::E ).is_some() { scan_send( winapi::um::winuser::KEYEVENTF_SCANCODE   , 0x00, 03, 0x0036 ); }
-   if current.iter().position(|&key| key == device_query::Keycode::Q ).is_some() { scan_send( winapi::um::winuser::KEYEVENTF_SCANCODE   , 0x00, 05, 0x0036 ); }
+
+   if current.iter().position(|&key| key == device_query::Keycode::O ).is_some() { scan_send( winapi::um::winuser::KEYEVENTF_SCANCODE   , 0x00, 03, 0x0036 ); }
+   if current.iter().position(|&key| key == device_query::Keycode::P ).is_some() { scan_send( winapi::um::winuser::KEYEVENTF_SCANCODE   , 0x00, 05, 0x0036 ); }
 
    if current.iter().position(|&key| key == device_query::Keycode::B ).is_some() { scan_send( winapi::um::winuser::KEYEVENTF_EXTENDEDKEY, 0xA3, 02, 0xE01D ); }
    if current.iter().position(|&key| key == device_query::Keycode::V ).is_some() { scan_send( winapi::um::winuser::KEYEVENTF_EXTENDEDKEY, 0xA3, 04, 0xE01D ); }
    if current.iter().position(|&key| key == device_query::Keycode::C ).is_some() { scan_send( winapi::um::winuser::KEYEVENTF_EXTENDEDKEY, 0xA3, 06, 0xE01D ); }
    if current.iter().position(|&key| key == device_query::Keycode::X ).is_some() { scan_send( winapi::um::winuser::KEYEVENTF_EXTENDEDKEY, 0xA3, 08, 0xE01D ); }
    if current.iter().position(|&key| key == device_query::Keycode::Z ).is_some() { scan_send( winapi::um::winuser::KEYEVENTF_EXTENDEDKEY, 0xA3, 12, 0xE01D ); }
-   if current.iter().position(|&key| key == device_query::Keycode::R ).is_some() { scan_send( winapi::um::winuser::KEYEVENTF_EXTENDEDKEY, 0xA3, 03, 0xE01D ); }
-   if current.iter().position(|&key| key == device_query::Keycode::W ).is_some() { scan_send( winapi::um::winuser::KEYEVENTF_EXTENDEDKEY, 0xA3, 05, 0xE01D ); }
+
+   if current.iter().position(|&key| key == device_query::Keycode::I ).is_some() { scan_send( winapi::um::winuser::KEYEVENTF_EXTENDEDKEY, 0xA3, 03, 0xE01D ); }
+   if current.iter().position(|&key| key == device_query::Keycode::U ).is_some() { scan_send( winapi::um::winuser::KEYEVENTF_EXTENDEDKEY, 0xA3, 05, 0xE01D ); }
 
    if current.iter().position(|&key| key == device_query::Keycode::CapsLock).is_some() {
     winput::send_inputs( [ winput::Input::from_vk( winput::Vk::LeftWin, winput::Action::Press), winput::Input::from_vk( winput::Vk::Tab    , winput::Action::Press   )
