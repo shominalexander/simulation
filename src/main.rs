@@ -37,8 +37,6 @@ fn main() {
 
    println!("current: {:?}", current);
 
-   if current.iter().position(|&key| key == device_query::Keycode::LControl ).is_some() { continue; } 
-   if current.iter().position(|&key| key == device_query::Keycode::LShift   ).is_some() { continue; } 
    if current.iter().position(|&key| key == device_query::Keycode::Meta     ).is_some() { continue; } 
 
    if current.iter().position(|&key| key == device_query::Keycode::G        ).is_some() { scan_send( winapi::um::winuser::KEYEVENTF_SCANCODE   , 0x00, 02, 0x0036 ); }
