@@ -1,11 +1,14 @@
 use device_query::DeviceQuery;
 
-fn scan_send(flag: u32, key: u16, repeat: u8, scan: u16) {
- let last: u8;
+fn scan_send(flag: u32, key: u16, repeat: u64, scan: u16) {
+ let last: u64;
+ let stop: u64;
 
- let mut previous: u8 = 0;
+ let mut previous: u64 = 0;
 
  if repeat == 0 { last = 1; } else { last = repeat; }
+
+ stop = 200 / last;
 
  unsafe {
   let mut input_d = winapi::um::winuser::INPUT { type_: winapi::um::winuser::INPUT_KEYBOARD, u: std::mem::zeroed() };
@@ -15,9 +18,8 @@ fn scan_send(flag: u32, key: u16, repeat: u8, scan: u16) {
   *input_u.u.ki_mut() = winapi::um::winuser::KEYBDINPUT { wVk: key, dwFlags: flag | winapi::um::winuser::KEYEVENTF_KEYUP, dwExtraInfo: winapi::um::winuser::GetMessageExtraInfo() as usize, wScan: scan, time: 0 };
 
   while previous < last {
-   std::thread::sleep(std::time::Duration::from_millis(18)); println!("winapi::um::winuser::SendInput(d): {:?}", winapi::um::winuser::SendInput(1, &mut input_d, std::mem::size_of::<winapi::um::winuser::INPUT>() as i32));
-   std::thread::sleep(std::time::Duration::from_millis(18)); println!("winapi::um::winuser::SendInput(u): {:?}", winapi::um::winuser::SendInput(1, &mut input_u, std::mem::size_of::<winapi::um::winuser::INPUT>() as i32));
-   std::thread::sleep(std::time::Duration::from_millis(18));
+   std::thread::sleep(std::time::Duration::from_millis(stop)); println!("winapi::um::winuser::SendInput(d): {:?}", winapi::um::winuser::SendInput(1, &mut input_d, std::mem::size_of::<winapi::um::winuser::INPUT>() as i32));
+   std::thread::sleep(std::time::Duration::from_millis(stop)); println!("winapi::um::winuser::SendInput(u): {:?}", winapi::um::winuser::SendInput(1, &mut input_u, std::mem::size_of::<winapi::um::winuser::INPUT>() as i32));
 
    previous += 1;
   }//while previous < last {
